@@ -1,0 +1,29 @@
+# Language Identification - docker-compose
+# Two services share the same image: the FastAPI backend and the Streamlit UI.
+#
+#   docker compose up --build
+
+services:
+  api:
+    build: .
+    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./models:/app/models:ro
+    restart: unless-stopped
+
+  ui:
+    build: .
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - LOG_LEVEL=INFO
+    depends_on:
+      - api
+    volumes:
+      - ./models:/app/models:ro
+    restart: unless-stopped

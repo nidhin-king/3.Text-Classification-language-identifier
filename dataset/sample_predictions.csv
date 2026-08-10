@@ -1,0 +1,15 @@
+text,expected_language
+"Hello, how are you? I hope you are having a wonderful day.",English
+"Bonjour tout le monde, comment allez-vous aujourd'hui ?",French
+"नमस्ते आप कैसे हैं, मैं आपके बारे में सुनकर खुश हूं।",Hindi
+"வணக்கம், இன்று நீங்கள் எப்படி இருக்கிறீர்கள்?",Tamil
+"ഹലോ, നിങ്ങൾക്ക് സുഖമാണോ? ഇന്ന് എന്തുണ്ട് വിശേഷം?",Malayalam
+"Guten Morgen, wie geht es dir heute?",German
+"Hola, ¿cómo estás hoy? Espero que tengas un buen día.",Spanish
+"Buongiorno, come stai oggi?",Italian
+こんにちは、今日はお元気ですか。,Japanese
+"안녕하세요, 오늘 기분이 어떠세요?",Korean
+"Привет, как у тебя дела сегодня?",Russian
+مرحبا، كيف حالك اليوم؟,Arabic
+สวัสดีครับ วันนี้คุณเป็นอย่างไรบ้าง,Thai
+"Xin chào, hôm nay bạn khỏe không?",Vietnamese

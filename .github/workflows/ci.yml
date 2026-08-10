@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile check (syntax)
+        run: python -m compileall src app.py api.py cli.py tests
+
+      - name: Quick training (CI mode)
+        run: python -m src.train --quick
+
+      - name: Run test suite
+        run: python -m pytest -q
+
+      - name: Smoke-test the API
+        run: |
+          python - <<'EOF'
+          from fastapi.testclient import TestClient
+          from api import app
+          with TestClient(app) as client:
+              r = client.post("/predict", json={"text": "Bonjour tout le monde"})
+              assert r.status_code == 200, r.text
+              assert r.json()["language"] == "French"
+          print("API smoke test OK")
+          EOF
